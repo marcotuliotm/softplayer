@@ -1,0 +1,21 @@
+version: '3'
+services:
+  docker-front-end:
+    image: marcotuliotm/frontend
+    ports:
+      - "8000:80"
+    depends_on:
+      - docker-back-end
+  docker-back-end:
+    image: marcotuliotm/backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - docker-postgres
+  docker-postgres:
+    image: postgres:10.4
+    environment:
+      - POSTGRES_DB=softplayer
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
