@@ -1,7 +1,6 @@
 package com.softplayer.backend.controller;
 
 import static java.util.Collections.singleton;
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.ResponseEntity.status;
 

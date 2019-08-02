@@ -12,18 +12,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-
-
 	@Bean
-	Docket api() {
+	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.softplayer.backend.controller"))
 				.paths(PathSelectors.any())
 				.build()
 				.pathMapping("/");
-//                .securitySchemes( Lists.newArrayList(apiKey() ) )
-//                .apiInfo(metadata());
 	}
-
 }
