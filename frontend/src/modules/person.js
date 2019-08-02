@@ -2,6 +2,7 @@ import PersonsApi from "../services/personsApi";
 
 export const LOAD_PERSONS_LOADING = 'LOAD_PERSONS_LOADING';
 export const LOAD_PERSONS_SUCCESS = 'LOAD_PERSONS_SUCCESS';
+export const FIND_PERSONS_SUCCESS = 'FIND_PERSONS_SUCCESS';
 export const PERSONS_ERROR = 'LOAD_PERSONS_ERROR';
 export const CREATE_PERSON_LOADING = 'CREATE_PERSON_LOADING';
 export const CREATE_PERSON_SUCCESS = 'CREATE_PERSON_SUCCESS';
@@ -56,10 +57,26 @@ export const edit = (person) => dispatch => {
         )
 };
 
+export const find = filter => dispatch => {
+    if(!filter) {
+        dispatch(loadAll());
+        return
+    }
+    dispatch({ type: LOAD_PERSONS_LOADING, filter });
+
+    PersonsApi.find(filter)
+        .then(response => response.data)
+        .then(
+            data => dispatch({ type: LOAD_PERSONS_SUCCESS, data, filter }),
+            error => dispatch({ type: PERSONS_ERROR, error: error.response.data || 'Unexpected Error!!!' })
+        )
+};
+
 const initialState = {
     data: [],
     loading: false,
-    error: []
+    error: [],
+    filter: "",
 };
 
 export const cancel = () => dispatch => {
@@ -86,7 +103,8 @@ export default function persons(state = initialState, action) {
             return {
                 ...state,
                 loading: true,
-                error: []
+                error: [],
+                filter: action.filter,
             };
         }
         case LOAD_PERSONS_SUCCESS: {
@@ -94,6 +112,14 @@ export default function persons(state = initialState, action) {
                 ...state,
                 data: action.data,
                 loading: false
+            }
+        }
+        case FIND_PERSONS_SUCCESS: {
+            return {
+                ...state,
+                data: action.data,
+                loading: false,
+                filter: action.filter,
             }
         }
         case PERSONS_ERROR: {

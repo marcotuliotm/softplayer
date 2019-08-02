@@ -17,6 +17,8 @@ import ScrollDialog from './ScrollDialogErros';
 import Search from './Search';
 import { columns, options, localization, } from './Styles';
 
+
+
 class Home extends React.Component {
 
   componentDidMount() {
@@ -27,32 +29,32 @@ class Home extends React.Component {
     const { persons, create, remove, edit, loading, errors, cancel, find, filter } = this.props;
 
     return (
-      <Container display='flex' component="main" maxWidth="lg">
-        <CssBaseline />
-        <ScrollDialog errors={errors} cancel={cancel} />
-        <MaterialTable
-          components={{ Toolbar: props => (<Search props={props} find={find} filter={filter} />) }}
-          columns={columns}
-          isLoading={loading}
-          data={persons}
-          options={options}
-          localization={localization}
-          editable={{
-            onRowAdd: newData => new Promise((resolve, reject) => {
-              create(newData);
-              resolve();
-            }),
-            onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
-              edit(newData);
-              resolve();
-            }),
-            onRowDelete: oldData => new Promise((resolve, reject) => {
-              remove(oldData);
-              resolve();
-            })
-          }}
-        />
-      </Container>
+        <Container display='flex' component="main" maxWidth="lg">
+          <CssBaseline />
+          <ScrollDialog errors={errors} cancel={cancel} />
+          <MaterialTable
+            components={{ Toolbar: props => (<Search props={props} find={find} filter={filter} />) }}
+            columns={columns}
+            isLoading={loading}
+            data={persons}
+            options={options}
+            localization={localization}
+            editable={{
+              onRowAdd: newData => new Promise((resolve, reject) => {
+                create(newData);
+                resolve();
+              }),
+              onRowUpdate: (newData, oldData) => new Promise((resolve, reject) => {
+                edit(newData);
+                resolve();
+              }),
+              onRowDelete: oldData => new Promise((resolve, reject) => {
+                remove(oldData);
+                resolve();
+              })
+            }}
+          />
+        </Container>
     );
   }
 }
