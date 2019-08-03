@@ -1,6 +1,7 @@
 package com.softplayer.backend.controller;
 
 import static java.util.Collections.singleton;
+import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.http.ResponseEntity.status;
 
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -37,5 +39,14 @@ public class ControllerAdvice {
 	public ResponseEntity<Set<BusinessExceptionDTO>> handleServerError(final BusinessException businessException) {
 				return status(UNPROCESSABLE_ENTITY)
 				.body(singleton(new BusinessExceptionDTO(UNPROCESSABLE_ENTITY, businessException.getPropertyPath(), businessException.getMessageTemplate(), businessException.getMessage())));
+	}
+
+	@ExceptionHandler(TransactionSystemException.class)
+	public ResponseEntity<Set<BusinessExceptionDTO>> handleServerError(final TransactionSystemException businessException) {
+		if(businessException.getCause().getCause() instanceof ConstraintViolationException) {
+			return handleServerError((ConstraintViolationException) businessException.getCause().getCause());
+		}
+		return status(SERVICE_UNAVAILABLE)
+				.body(singleton(new BusinessExceptionDTO(SERVICE_UNAVAILABLE, "server", "server.error", "unexpected")));
 	}
 }
