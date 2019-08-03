@@ -23,7 +23,7 @@ export default function ScrollDialog({errors=[], cancel}) {
         <DialogTitle id="scroll-dialog-title">Invalid Fields</DialogTitle>
         <DialogContent dividers={true}>
           <DialogContentText>
-            {errors.map(erro => (<DialogContentText> {erro.propertyPath.toUpperCase()} : {erro.message}</DialogContentText>))}
+            {errors.map(error => (<DialogContentText> {error.propertyPath.toUpperCase()} : {error.message}</DialogContentText>))}
           </DialogContentText>
         </DialogContent>
         <DialogActions>

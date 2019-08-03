@@ -2,6 +2,7 @@ import PersonsApi from "../services/personsApi";
 
 export const LOAD_PERSONS_LOADING = 'LOAD_PERSONS_LOADING';
 export const LOAD_PERSONS_SUCCESS = 'LOAD_PERSONS_SUCCESS';
+export const LOAD_PERSONS_ERROR = 'LOAD_PERSONS_ERROR';
 export const FIND_PERSONS_SUCCESS = 'FIND_PERSONS_SUCCESS';
 export const PERSONS_ERROR = 'LOAD_PERSONS_ERROR';
 export const CREATE_PERSON_LOADING = 'CREATE_PERSON_LOADING';
@@ -19,7 +20,7 @@ export const loadAll = () => dispatch => {
         .then(response => response.data)
         .then(
             data => dispatch({ type: LOAD_PERSONS_SUCCESS, data }),
-            error => dispatch({ type: PERSONS_ERROR, error: error.response.data || 'Unexpected Error!!!' })
+            error => dispatch({ type: LOAD_PERSONS_ERROR, error: [] || 'Unexpected Error!!!' })
         )
 };
 
@@ -121,6 +122,13 @@ export default function persons(state = initialState, action) {
                 loading: false,
                 filter: action.filter,
             }
+        }
+        case PERSONS_ERROR: {
+            return {
+                ...state,
+                loading: false,
+                error: action.error
+            };
         }
         case PERSONS_ERROR: {
             return {
